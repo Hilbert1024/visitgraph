@@ -12,47 +12,51 @@ import embedding
 import train
 import numpy as np
 import random
+import os
+
+def Mkdir(method):
+    if not os.path.exists('../data/{}'.format(method)):
+        os.mkdir('../data/{}'.format(method))
+        os.mkdir('../data/{}/transmat'.format(method))
+        os.mkdir('../data/{}/walkseries'.format(method))
+        os.mkdir('../data/{}/embvec'.format(method))
+        os.mkdir('../data/{}/results'.format(method))
+    return
 
 def main():
+    #load data
     graph, labelsMat = loadgraph.GraphLoader().getGraph()
-    name = str(random.randint(0,10000))
+    name = str(random.randint(0,10000)) # random name for mutiple runs of program.
 
+    # deepwalk
+    method = "deepwalk"
+    Mkdir(method)
     transMat = transmat.TransMat(graph).deepWalkTransMat()
-    walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, name = name).nodeSeries(method = "deepwalk")
-    model = embedding.GraphEmbedding(walkSeries, size = 128, window = 5, name = name).embedding(method = "deepwalk")
-    resultMicro, resultMacro = train.Trainer(model, labelsMat, name = name).train(method = "deepwalk")
+    walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, name = name).nodeSeries(method = method)
+    model = embedding.GraphEmbedding(walkSeries, size = 128, window = 5, name = name).embedding(method = method)
+    resultMicro, resultMacro = train.Trainer(model, labelsMat, name = name).train(method = method)
     print("deepwalk resultMicro : ", resultMicro)
     print("deepwalk resultMacro : ", resultMacro)
 
+    # sim2nd
+    method = "sim2nd"
+    Mkdir(method)
     transMat = transmat.TransMat(graph).sim2ndTransMat(lam = 1)
     names = name + '_1'
-    walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, name = names).nodeSeries(method = "sim2nd")
-    model = embedding.GraphEmbedding(walkSeries, size = 128, window = 5, name = names).embedding(method = "sim2nd")
-    resultMicro, resultMacro = train.Trainer(model, labelsMat, name = names).train(method = "sim2nd")
-    print("sim2nd1 resultMicro : ", resultMicro)
-    print("sim2nd1 resultMacro : ", resultMacro)
+    walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, name = names).nodeSeries(method = method)
+    model = embedding.GraphEmbedding(walkSeries, size = 128, window = 5, name = names).embedding(method = method)
+    resultMicro, resultMacro = train.Trainer(model, labelsMat, name = names).train(method = method)
+    print("sim2nd resultMicro : ", resultMicro)
+    print("sim2nd resultMacro : ", resultMacro)
 
-    transMat = transmat.TransMat(graph).sim2ndTransMat(lam = 0.5)
-    names = name + '_0.5'
-    walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, name = names).nodeSeries(method = "sim2nd")
-    model = embedding.GraphEmbedding(walkSeries, size = 128, window = 5, name = names).embedding(method = "sim2nd")
-    resultMicro, resultMacro = train.Trainer(model, labelsMat, name = names).train(method = "sim2nd")
-    print("sim2nd.5 resultMicro : ", resultMicro)
-    print("sim2nd.5 resultMacro : ", resultMacro)
-
-    transMat = transmat.TransMat(graph).sim2ndTransMat(lam = 0.1)
-    names = name + '_0.1'
-    walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, name = names).nodeSeries(method = "sim2nd")
-    model = embedding.GraphEmbedding(walkSeries, size = 128, window = 5, name = names).embedding(method = "sim2nd")
-    resultMicro, resultMacro = train.Trainer(model, labelsMat, name = names).train(method = "sim2nd")
-    print("sim2nd.1 resultMicro : ", resultMicro)
-    print("sim2nd.1 resultMacro : ", resultMacro)
-
+    # node2vec
+    method = "node2vec"
+    Mkdir(method)
     transMat = transmat.TransMat(graph).node2vecTransMat(p = 0.25, q = 0.25)
     names = name + '_0.25_0.25'
-    walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, name = names).edgeSeries(method = "node2vec")
-    model = embedding.GraphEmbedding(walkSeries, size = 128, window = 5, name = names).embedding(method = "node2vec")
-    resultMicro, resultMacro = train.Trainer(model, labelsMat, name = names).train(method = "node2vec")
+    walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, name = names).edgeSeries(method = method)
+    model = embedding.GraphEmbedding(walkSeries, size = 128, window = 5, name = names).embedding(method = method)
+    resultMicro, resultMacro = train.Trainer(model, labelsMat, name = names).train(method = method)
     print("node2vec resultMicro : ", resultMicro)
     print("node2vec resultMacro : ", resultMacro)
     return
