@@ -31,6 +31,7 @@ def main():
     name = str(random.randint(0,10000)) # random name for mutiple runs of program.
 
     # deepwalk
+    tempTime = time.time()
     method = "deepwalk"
     print("Method = deepwalk")
     Mkdir(method)
@@ -39,10 +40,12 @@ def main():
     walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, name = name).nodeSeries(method = method)
     model = embedding.GraphEmbedding(walkSeries, size = 128, window = 5, name = name).embedding(method = method)
     resultMicro, resultMacro = train.Trainer(model, labelsMat, name = name).train(method = method)
-    print("deepwalk resultMicro : ", resultMicro)
+    print("\ndeepwalk resultMicro : ", resultMicro)
     print("deepwalk resultMacro : ", resultMacro)
+    print("deepwalk costs {}s.\n".format(round(time.time() - tempTime)))
 
     # sim2nd
+    tempTime = time.time()
     method = "sim2nd"
     print("Method = sim2nd")
     Mkdir(method)
@@ -52,10 +55,12 @@ def main():
     walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, name = names).nodeSeries(method = method)
     model = embedding.GraphEmbedding(walkSeries, size = 128, window = 5, name = names).embedding(method = method)
     resultMicro, resultMacro = train.Trainer(model, labelsMat, name = names).train(method = method)
-    print("sim2nd resultMicro : ", resultMicro)
+    print("\nsim2nd resultMicro : ", resultMicro)
     print("sim2nd resultMacro : ", resultMacro)
+    print("sim2nd costs {}s.\n".format(round(time.time() - tempTime)))
 
     # node2vec
+    tempTime = time.time()
     method = "node2vec"
     print("Method = node2vec")
     Mkdir(method)
@@ -65,8 +70,9 @@ def main():
     walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, name = names).edgeSeries(method = method)
     model = embedding.GraphEmbedding(walkSeries, size = 128, window = 5, name = names).embedding(method = method)
     resultMicro, resultMacro = train.Trainer(model, labelsMat, name = names).train(method = method)
-    print("node2vec resultMicro : ", resultMicro)
+    print("\nnode2vec resultMicro : ", resultMicro)
     print("node2vec resultMacro : ", resultMacro)
+    print("node2vec costs {}s.\n".format(round(time.time() - tempTime)))
     return
 
 if __name__ == '__main__':
