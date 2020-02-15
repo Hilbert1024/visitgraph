@@ -86,7 +86,7 @@ class TransMat(object):
         z = np.max(unnormNeighborSim) - np.min(unnormNeighborSim)
         if z == 0:
             return np.array([1/len(unnormNeighborSim)]*len(unnormNeighborSim))
-        unnormNeighborSim = 1 / (unnormNeighborSim + lam*z)
+        unnormNeighborSim = 1 / (np.array(unnormNeighborSim) + lam * z)
         return unnormNeighborSim / np.sum(unnormNeighborSim)
 
     def deepWalkTransMat(self):
