@@ -51,6 +51,7 @@ class RandomWalk(object):
         Simulate a random walk series when next movement only depends on current node, apply to deepwalk&sim2nd.
         """
         walks = []
+        count = 0
         for _ in np.arange(self.walkNum):
             nodes = list(self.nodes)
             random.shuffle(nodes)
@@ -63,7 +64,9 @@ class RandomWalk(object):
                         walk.append(curNbr[self._nodeChoice(self.transMat[curNode])])
                     else:
                         break
+                count += 1
                 walks.append(walk)
+                print('\r',"Simulating random walk series, process : {}%".format(round(100 * count / (self.walkNum * len(self.nodes)), 2)), end='', flush=True)
         try:
             np.save('../data/{}/walkseries/walkseries_{}.npy'.format(method,self.name), walks)
         except FileNotFoundError:
@@ -77,6 +80,7 @@ class RandomWalk(object):
         """
 
         walks = []
+        count = 0
         for _ in np.arange(self.walkNum):
             nodes = list(self.nodes)
             random.shuffle(nodes)
@@ -91,7 +95,9 @@ class RandomWalk(object):
                         else:
                             preNode = walk[-2]
                             nextNode = curNbr[self._nodeChoice(self.transMat[(preNode, curNode)])]
+                        count += 1
                         walk.append(nextNode)
+                        print('\r',"Simulating random walk series, process : {}%".format(round(100 * count / (self.walkNum * len(self.nodes)), 2)), end='', flush=True)
                     else:
                         break
                 walks.append(walk)

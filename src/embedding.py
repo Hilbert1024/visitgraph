@@ -40,6 +40,7 @@ class GraphEmbedding(object):
 
     def embedding(self, method):
         walks = self._int2str()
+        print("\nWord2vec embedding...")
         model = Word2Vec(walks, size = self.size, window = self.window, min_count=0) # Can not ignore any nodes.
         model.wv.save_word2vec_format('../data/{}/embvec/embvec_{}.txt'.format(method, self.name))
         model = KeyedVectors.load_word2vec_format('../data/{}/embvec/embvec_{}.txt'.format(method, self.name), binary=False)

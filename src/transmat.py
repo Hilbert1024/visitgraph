@@ -97,6 +97,7 @@ class TransMat(object):
         Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining. 2014: 701-710.
         """
         if not os.path.exists('../data/deepwalk/transmat/transmat.pkl'):
+            print("Generating transition matrix...")
             nodeTrans = dict()
             for node in self.nodes:
                 unnormProb = np.array([self.graph[node][nbr]['weight'] for nbr in self.graph.neighbors(node)])
@@ -104,6 +105,7 @@ class TransMat(object):
             with open('../data/deepwalk/transmat/transmat.pkl', 'wb') as outp:
                 pickle.dump(nodeTrans, outp)
         else:
+            print("Transition matrix was already generated.")
             with open('../data/deepwalk/transmat/transmat.pkl', 'rb') as inp:
                 nodeTrans = pickle.load(inp)
         return nodeTrans
@@ -127,6 +129,7 @@ class TransMat(object):
         This process may cost much time.
         """
         if not os.path.exists('../data/node2vec/transmat/transmat_{}_{}.pkl'.format(p,q)):
+            print("Generating transition matrix...")
             edgeTrans = dict()
             if directed:
                 for edge in self.graph.edges():
@@ -138,12 +141,14 @@ class TransMat(object):
             with open('../data/node2vec/transmat/transmat_{}_{}.pkl'.format(p,q), 'wb') as outp:
                 pickle.dump(edgeTrans, outp)
         else:
+            print("Transition matrix was already generated.")
             with open('../data/node2vec/transmat/transmat_{}_{}.pkl'.format(p,q), 'rb') as inp:
                 edgeTrans = pickle.load(inp)
         return edgeTrans
 
     def sim2ndTransMat(self, lam):
         if not os.path.exists('../data/sim2nd/transmat/transmat.pkl'):
+            print("Generating transition matrix...")
             nodeTrans = {}
             edgeSecondSim = self._get2ndSimMat()
             for node in self.nodes:
@@ -151,6 +156,7 @@ class TransMat(object):
             with open('../data/sim2nd/transmat/transmat_{}.pkl'.format(lam), 'wb') as outp:
                 pickle.dump(nodeTrans, outp)
         else:
+            print("Transition matrix was already generated.")
             with open('../data/node2vec/transmat/transmat_{}.pkl'.format(lam), 'rb') as inp:
                 nodeTrans = pickle.load(inp)
         return nodeTrans

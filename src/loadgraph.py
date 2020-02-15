@@ -33,6 +33,7 @@ class GraphLoader(object):
             adjMat = loadGraph['network']
             graph = nx.from_numpy_matrix(adjMat.todense())
             labelsMat = loadGraph['group']
+            print('Graph blogcatalog is loaded.')
             return graph, labelsMat
         else:
             raise("data not exists!")

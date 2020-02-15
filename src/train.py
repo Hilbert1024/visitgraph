@@ -58,6 +58,7 @@ class Trainer(object):
             preds = clf.predict(X_test, topKList)
             resultMicro.append(f1_score(y_test, preds, average = 'micro'))
             resultMacro.append(f1_score(y_test, preds, average = 'macro'))
+            print('\r',"Training with {0}% labeled nodes...".format(int(100 * ratio)), end='', flush=True)
         np.save('../data/{}/results/resultsMicro_{}.npy'.format(method, self.name), np.array(resultMicro))
         np.save('../data/{}/results/resultsMacro_{}.npy'.format(method, self.name), np.array(resultMacro))
         return resultMicro, resultMacro
