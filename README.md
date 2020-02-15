@@ -13,7 +13,7 @@ This is a beta version 0.1.0 released on 2020-02-14.
 ```markdown
 cd sim2nd
 pip install -r requirements.txt
-cd sim2nd
+cd src
 python main.py
 ```
 
