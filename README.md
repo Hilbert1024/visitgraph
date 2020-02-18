@@ -25,6 +25,12 @@ cd src
 python main.py
 ```
 
+## Data set
+
+|  Data set   | nodes  | edges | labels |
+|  ----  | ----  | ----| ---- |
+| blogcatalog  | 10312 | 333983 | 39 |
+
 ## Results
 
 The parameter settings used for visitgraph are in line with typical values used for deepwalk and node2vec. Specifically, we set d = 128,
@@ -35,11 +41,6 @@ r = 10, l = 80, w = 10 where
 + w : window size.
 
 ![Multi-label classification results in BlogCatalog](https://github.com/Hilbert1024/visitgraph/blob/master/figure/example_result.jpg)
-## Data set
-
-|  Data set   | nodes  | edges | labels |
-|  ----  | ----  | ----| ---- |
-| blogcatalog  | 10312 | 333983 | 39 |
 
 ## Notes
 You may cost much time on generating node2vec transition matrix.
