@@ -28,7 +28,11 @@ python main.py
 ## Results
 
 The parameter settings used for visitgraph are in line with typical values used for deepwalk and node2vec. Specifically, we set d = 128,
-r = 10, l = 80, k = 10.
+r = 10, l = 80, w = 10 where
++ d : embedding size.
++ r : walks per nodes.
++ l : walk length.
++ w : window size.
 
 ![Multi-label classification results in BlogCatalog](https://github.com/Hilbert1024/visitgraph/blob/master/figure/example_result.jpg)
 ## Data set
