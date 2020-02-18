@@ -46,9 +46,18 @@ class RandomWalk(object):
         """
         return np.random.choice(len(probArr), p = probArr)
 
+    def _nodeVisitChoice(self, probArr):
+        """
+        Generates a random sample from np.arange(len(probArr)).
+        ProbArr is the probabilities associated with each entry in np.arange(len(probArr)).
+        """
+        probArr = 1 / probArr #reversed
+        probArr /= np.sum(probArr) #normalized
+        return np.random.choice(len(probArr), p = probArr)
+
     def nodeSeries(self, method):
         """
-        Simulate a random walk series when next movement only depends on current node, apply to deepwalk&sim2nd.
+        Simulate a random walk series when next movement only depends on current node, apply to deepwalk.
         """
         walks = []
         count = 0
@@ -96,6 +105,38 @@ class RandomWalk(object):
                             preNode = walk[-2]
                             nextNode = curNbr[self._nodeChoice(self.transMat[(preNode, curNode)])]
                         walk.append(nextNode)
+                    else:
+                        break
+                count += 1
+                walks.append(walk)
+                print('\r',"Simulating random walk series, process : {}%".format(round(100 * count / (self.walkNum * len(self.nodes)), 2)), end='', flush=True)
+        try:
+            np.save('../data/{}/walkseries/walkseries_{}.npy'.format(method, self.name), walks)
+        except FileNotFoundError:
+            print("File can not found!")
+        else:
+            return walks
+
+    def nodeVisitSeries(self, method):
+        """
+        Simulate a random walk series when next movement only depends on current node, apply to visitgraph.
+        """
+        walks = []
+        count = 0
+        visit = np.array([1] * len(self.nodes))
+        for _ in np.arange(self.walkNum):
+            nodes = list(self.nodes)
+            random.shuffle(nodes)
+            for node in nodes:
+                walk = [node]
+                while len(walk) < self.walkLen:
+                    curNode = walk[-1]
+                    curNbr = list(self.graph.neighbors(curNode))
+                    if len(curNbr) > 0:
+                        randomIndex = self._nodeVisitChoice(self.transMat[curNode] * visit[curNbr])
+                        nextNode = curNbr[randomIndex]
+                        walk.append(nextNode)
+                        visit[nextNode] += 1
                     else:
                         break
                 count += 1

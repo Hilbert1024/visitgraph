@@ -31,6 +31,9 @@ class TransMat(object):
         self.nodes = graph.nodes()
 
     def _getEdgeProb(self, preNode, curNode, p, q):
+        """
+        For node2vec only.
+        """
         unnormProb = []
         for curNbr in self.graph.neighbors(curNode):
             if curNbr == preNode:
@@ -40,54 +43,6 @@ class TransMat(object):
             else:
                 unnormProb.append(self.graph[curNode][curNbr]['weight'] / q)
         return np.array(unnormProb) / np.sum(unnormProb)
-
-    def _secondSimilarity(self, curNode, nextNode):
-        curNeighbor = self.graph.neighbors(curNode)
-        curNeighborLen = curNeighbor.__length_hint__()
-        nextNeighbor = self.graph.neighbors(nextNode)
-        nextNeighborLen = nextNeighbor.__length_hint__()
-        count = 0
-        if curNeighborLen < nextNeighborLen:
-            for nodes in curNeighbor:
-                if nodes in nextNeighbor:
-                    count += 1
-        else:
-            for nodes in nextNeighbor:
-                if nodes in curNeighbor:
-                    count += 1
-        return count/np.sqrt(curNeighborLen*nextNeighborLen)
-
-    def _get2ndSimMat(self):
-        if not os.path.exists('../data/sim2nd/transmat/secondsim.pkl'):
-            edgeSecondSim = {}
-            for node in self.nodes:
-                nodeNeighbor = self.graph.neighbors(node)
-                for neighbor in nodeNeighbor:
-                    if neighbor > node and (node,neighbor) not in edgeSecondSim.keys():
-                        edgeSecondSim[(node, neighbor)] = self._secondSimilarity(node,neighbor)
-                    elif neighbor < node and (neighbor, node) not in edgeSecondSim.keys():
-                        edgeSecondSim[(neighbor, node)] = self._secondSimilarity(node,neighbor)
-            with open('../data/sim2nd/transmat/secondsim.pkl', 'wb') as outp:
-                pickle.dump(edgeSecondSim, outp)
-        else:
-            with open('../data/sim2nd/transmat/secondsim.pkl', 'rb') as inp:
-                edgeSecondSim = pickle.load(inp)
-        return edgeSecondSim
-
-    def _secondSimProb(self, curNode, lam, edgeSecondSim):
-        unnormNeighborSim = []
-        for neighbor in self.graph.neighbors(curNode):
-            try:
-                tempSim = edgeSecondSim[(curNode,neighbor)]
-            except KeyError:
-                unnormNeighborSim.append(edgeSecondSim[(neighbor,curNode)])
-            else:
-                unnormNeighborSim.append(tempSim)
-        z = np.max(unnormNeighborSim) - np.min(unnormNeighborSim)
-        if z == 0:
-            return np.array([1/len(unnormNeighborSim)]*len(unnormNeighborSim))
-        unnormNeighborSim = 1 / (np.array(unnormNeighborSim) + lam * z)
-        return unnormNeighborSim / np.sum(unnormNeighborSim)
 
     def deepWalkTransMat(self):
         """
@@ -146,17 +101,20 @@ class TransMat(object):
                 edgeTrans = pickle.load(inp)
         return edgeTrans
 
-    def sim2ndTransMat(self, lam):
-        if not os.path.exists('../data/sim2nd/transmat/transmat.pkl'):
+    def visitgraphTransMat(self):
+        """
+        A unormalized transition matrix of visit graph contains weight of each pair of edges.
+        """
+        if not os.path.exists('../data/visitgraph/transmat/transmat.pkl'):
             print("Generating transition matrix...")
-            nodeTrans = {}
-            edgeSecondSim = self._get2ndSimMat()
+            nodeTrans = dict()
             for node in self.nodes:
-                nodeTrans[node] = self._secondSimProb(node, lam, edgeSecondSim)
-            with open('../data/sim2nd/transmat/transmat_{}.pkl'.format(lam), 'wb') as outp:
+                unnormProb = np.array([self.graph[node][nbr]['weight'] for nbr in self.graph.neighbors(node)])
+                nodeTrans[node] = unnormProb
+            with open('../data/visitgraph/transmat/transmat.pkl', 'wb') as outp:
                 pickle.dump(nodeTrans, outp)
         else:
             print("Transition matrix was already generated.")
-            with open('../data/node2vec/transmat/transmat_{}.pkl'.format(lam), 'rb') as inp:
+            with open('../data/visitgraph/transmat/transmat.pkl', 'rb') as inp:
                 nodeTrans = pickle.load(inp)
         return nodeTrans
