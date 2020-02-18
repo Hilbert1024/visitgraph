@@ -27,7 +27,7 @@ python main.py
 
 ## Data set
 
-|  Data set   | nodes  | edges | labels |
+|  graph   | nodes  | edges | labels |
 |  ----  | ----  | ----| ---- |
 | blogcatalog  | 10312 | 333983 | 39 |
 
