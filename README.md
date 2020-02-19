@@ -7,6 +7,7 @@ In current node, deepwalk[1] always walks to its neighbors with equal probabilit
 You can also consider this program as a graph embedding framework which contains simulating random walk series, embedding, training. You may add other methods of random walk in ./src/randomwalk.py.
 
 Version 1.0.0 2020-2-18.
+
 Version 2.0.0 2020-2-19.
 1. Add a parameters density index in visitgraph. 
 2. Add 2 data sets, PPI(Homo Sapiens) and wikipedia.
@@ -40,13 +41,13 @@ r = 10, l = 80, w = 10 where
 
 ## Data set
 
-|  Data set   | # nodes  | # edges | # labes | type | density |
+|  Data set   | # nodes  | # edges | # lables | type | density |
 |  ----  | ----  | ----| ---- | ---- | ---- |
 | blogcatalog  | 10312 | 333983 | 39 | undirected, unweighted | $6.28 \times 10^{-3}$ |
 | PPI(Homo Sapiens)  | 3890 | 76584 | 50 | undirected, unweighted | $1.01 \times 10^{-2}$ |
 | wikipedia | 4777 | 184812 | 40 | undirected, weighted | $1.62 \times 10^{-2}$ |
 
-## Nodes
+## Notes
 You may cost much time on generating node2vec transition matrix.
 
 ## References
