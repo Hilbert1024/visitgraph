@@ -42,9 +42,9 @@ r = 10, l = 80, w = 10 where
 
 |  Data set   | # nodes  | # edges | # labes | type | density |
 |  ----  | ----  | ----| ---- | ---- | ---- |
-| blogcatalog  | 10312 | 333983 | 39 | undirected, unweighted | $6.28\times 10^{-3}$ |
-| PPI(Homo Sapiens)  | 3890 | 76584 | 50 | undirected, unweighted | $1.01\times 10^{-2}$ |
-| wikipedia | 4777 | 184812 | 40 | undirected, weighted | $1.01\times 10^{-2}$ |
+| blogcatalog  | 10312 | 333983 | 39 | undirected, unweighted | $6.28 \\times 10^{-3}$ |
+| PPI(Homo Sapiens)  | 3890 | 76584 | 50 | undirected, unweighted | $1.01 \\times 10^{-2}$ |
+| wikipedia | 4777 | 184812 | 40 | undirected, weighted | $1.62 \\times 10^{-2}$ |
 
 ## Nodes
 You may cost much time on generating node2vec transition matrix.
