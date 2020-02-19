@@ -100,38 +100,38 @@ def main():
         print("{} resultMacro : ".format(method), np.mean(np.split(resultMacro[0],9), axis = 1))
         print("{} costs {}s.\n".format(method, round(time.time() - tempTime)))
 
-        # # deepwalk
-        # tempTime = time.time()
-        # method = "deepwalk"
-        # print("Method = deepwalk")
-        # Mkdir(graphName, method)
-        # transMat = transmat.TransMat(graph, graphName).unnormTransMat(method = method)
-        # time.sleep(0.5)
-        # walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, graphName = graphName, name = name).nodeSeries(method = method)
-        # model = embedding.GraphEmbedding(walkSeries, size = 128, window = window, graphName = graphName, name = name).embedding(method = method)
-        # resultMicro, resultMacro = train.Trainer(model, labelsMat, graphName = graphName, name = name).train(method = method)
-        # print("\n{} resultMicro : ".format(method), np.mean(np.split(resultMicro[0],9), axis = 1))
-        # print("{} resultMacro : ".format(method), np.mean(np.split(resultMacro[0],9), axis = 1))
-        # print("{} costs {}s.\n".format(method, round(time.time() - tempTime)))
+        # deepwalk
+        tempTime = time.time()
+        method = "deepwalk"
+        print("Method = deepwalk")
+        Mkdir(graphName, method)
+        transMat = transmat.TransMat(graph, graphName).unnormTransMat(method = method)
+        time.sleep(0.5)
+        walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, graphName = graphName, name = name).nodeSeries(method = method)
+        model = embedding.GraphEmbedding(walkSeries, size = 128, window = window, graphName = graphName, name = name).embedding(method = method)
+        resultMicro, resultMacro = train.Trainer(model, labelsMat, graphName = graphName, name = name).train(method = method)
+        print("\n{} resultMicro : ".format(method), np.mean(np.split(resultMicro[0],9), axis = 1))
+        print("{} resultMacro : ".format(method), np.mean(np.split(resultMacro[0],9), axis = 1))
+        print("{} costs {}s.\n".format(method, round(time.time() - tempTime)))
 
-        # # node2vec
-        # p, q = node2vecPara[graphName]
-        # tempTime = time.time()
-        # method = "node2vec"
-        # print("Method = node2vec")
-        # Mkdir(graphName, method)
-        # transMat = transmat.TransMat(graph, graphName).node2vecTransMat(p, q)
-        # time.sleep(0.5)
-        # names = name + '_0.25_0.25'
-        # walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, graphName = graphName, name = names).edgeSeries(method = method)
-        # model = embedding.GraphEmbedding(walkSeries, size = 128, window = window, graphName = graphName, name = names).embedding(method = method)
-        # resultMicro, resultMacro = train.Trainer(model, labelsMat, graphName = graphName, name = names).train(method = method)
-        # print("\n{} resultMicro : ".format(method), np.mean(np.split(resultMicro[0], 9), axis = 1))
-        # print("{} resultMacro : ".format(method), np.mean(np.split(resultMacro[0], 9), axis = 1))
-        # print("{} costs {}s.\n".format(method, round(time.time() - tempTime)))
+        # node2vec
+        p, q = node2vecPara[graphName]
+        tempTime = time.time()
+        method = "node2vec"
+        print("Method = node2vec")
+        Mkdir(graphName, method)
+        transMat = transmat.TransMat(graph, graphName).node2vecTransMat(p, q)
+        time.sleep(0.5)
+        names = name + '_0.25_0.25'
+        walkSeries = randomwalk.RandomWalk(graph, transMat, walkNum = 10, walkLen = 80, graphName = graphName, name = names).edgeSeries(method = method)
+        model = embedding.GraphEmbedding(walkSeries, size = 128, window = window, graphName = graphName, name = names).embedding(method = method)
+        resultMicro, resultMacro = train.Trainer(model, labelsMat, graphName = graphName, name = names).train(method = method)
+        print("\n{} resultMicro : ".format(method), np.mean(np.split(resultMicro[0], 9), axis = 1))
+        print("{} resultMacro : ".format(method), np.mean(np.split(resultMacro[0], 9), axis = 1))
+        print("{} costs {}s.\n".format(method, round(time.time() - tempTime)))
 
-        # # plot
-        # PlotF1(graphName, name)
+        # plot
+        PlotF1(graphName, name)
     return
 
 if __name__ == '__main__':
