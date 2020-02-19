@@ -27,13 +27,14 @@ class RandomWalk(object):
     name : str
         Name of file.
     """
-    def __init__(self, graph, transMat, walkNum = 10, walkLen = 80, name = ""):
+    def __init__(self, graph, transMat, graphName, walkNum = 10, walkLen = 80, name = ""):
         super(RandomWalk, self).__init__()
         self.graph = graph
         self.nodes = graph.nodes()
         self.transMat = transMat
         self.walkNum = walkNum
         self.walkLen = walkLen
+        self.graphName = graphName
         if name == "":
             self.name = str(random.randint(0,10000))
         else:
@@ -44,14 +45,6 @@ class RandomWalk(object):
         Generates a random sample from np.arange(len(probArr)).
         ProbArr is the probabilities associated with each entry in np.arange(len(probArr)).
         """
-        return np.random.choice(len(probArr), p = probArr)
-
-    def _nodeVisitChoice(self, probArr):
-        """
-        Generates a random sample from np.arange(len(probArr)).
-        ProbArr is the probabilities associated with each entry in np.arange(len(probArr)).
-        """
-        probArr = 1 / probArr #reversed
         probArr /= np.sum(probArr) #normalized
         return np.random.choice(len(probArr), p = probArr)
 
@@ -77,7 +70,7 @@ class RandomWalk(object):
                 walks.append(walk)
                 print('\r',"Simulating random walk series, process : {}%".format(round(100 * count / (self.walkNum * len(self.nodes)), 2)), end='', flush=True)
         try:
-            np.save('../data/{}/walkseries/walkseries_{}.npy'.format(method,self.name), walks)
+            np.save('../data/{}/{}/walkseries/walkseries_{}.npy'.format(self.graphName, method, self.name), walks)
         except FileNotFoundError:
             print("File can not found!")
         else:
@@ -111,13 +104,13 @@ class RandomWalk(object):
                 walks.append(walk)
                 print('\r',"Simulating random walk series, process : {}%".format(round(100 * count / (self.walkNum * len(self.nodes)), 2)), end='', flush=True)
         try:
-            np.save('../data/{}/walkseries/walkseries_{}.npy'.format(method, self.name), walks)
+            np.save('../data/{}/{}/walkseries/walkseries_{}.npy'.format(self.graphName, method, self.name), walks)
         except FileNotFoundError:
             print("File can not found!")
         else:
             return walks
 
-    def nodeVisitSeries(self, method):
+    def nodeVisitSeries(self, method, alpha = 1):
         """
         Simulate a random walk series when next movement only depends on current node, apply to visitgraph.
         """
@@ -133,7 +126,7 @@ class RandomWalk(object):
                     curNode = walk[-1]
                     curNbr = list(self.graph.neighbors(curNode))
                     if len(curNbr) > 0:
-                        randomIndex = self._nodeVisitChoice(self.transMat[curNode] * visit[curNbr])
+                        randomIndex = self._nodeChoice(self.transMat[curNode] * (1 / (visit[curNbr] ** alpha)))
                         nextNode = curNbr[randomIndex]
                         walk.append(nextNode)
                         visit[nextNode] += 1
@@ -143,7 +136,7 @@ class RandomWalk(object):
                 walks.append(walk)
                 print('\r',"Simulating random walk series, process : {}%".format(round(100 * count / (self.walkNum * len(self.nodes)), 2)), end='', flush=True)
         try:
-            np.save('../data/{}/walkseries/walkseries_{}.npy'.format(method, self.name), walks)
+            np.save('../data/{}/{}/walkseries/walkseries_{}.npy'.format(self.graphName, method, self.name), walks)
         except FileNotFoundError:
             print("File can not found!")
         else:

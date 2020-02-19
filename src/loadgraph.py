@@ -28,13 +28,14 @@ class GraphLoader(object):
         self.graphName = graphName
 
     def getGraph(self):
-        if self.graphName == 'blogcatalog':
-            loadGraph = loadmat('../graph/blogcatalog.mat')
+        try:
+            loadGraph = loadmat('../graph/{}.mat'.format(self.graphName))
             adjMat = loadGraph['network']
             graph = nx.from_numpy_matrix(adjMat.todense())
             labelsMat = loadGraph['group']
-            print('Graph blogcatalog is loaded.')
-            return graph, labelsMat
-        else:
+        except:
             raise("data not exists!")
+        else:
+            print('Graph {} is loaded.'.format(self.graphName))
+            return graph, labelsMat
         

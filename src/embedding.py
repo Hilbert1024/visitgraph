@@ -24,11 +24,12 @@ class GraphEmbedding(object):
     Goldberg Y, Levy O. word2vec Explained: deriving Mikolov et al.'s negative-sampling word-embedding method[J]. 
     arXiv preprint arXiv:1402.3722, 2014.
     """
-    def __init__(self, walkSeries, size = 128, window = 5, name = ""):
+    def __init__(self, walkSeries, graphName, size = 128, window = 5, name = ""):
         super(GraphEmbedding, self).__init__()
         self.walkSeries = walkSeries
         self.size = size
         self.window = window
+        self.graphName = graphName
         if name == "":
             self.name = str(random.randint(0,10000))
         else:
@@ -42,7 +43,7 @@ class GraphEmbedding(object):
         walks = self._int2str()
         print("\nWord2vec embedding...")
         model = Word2Vec(walks, size = self.size, window = self.window, min_count=0) # Can not ignore any nodes.
-        model.wv.save_word2vec_format('../data/{}/embvec/embvec_{}.txt'.format(method, self.name))
-        model = KeyedVectors.load_word2vec_format('../data/{}/embvec/embvec_{}.txt'.format(method, self.name), binary=False)
+        model.wv.save_word2vec_format('../data/{}/{}/embvec/embvec_{}.txt'.format(self.graphName, method, self.name))
+        model = KeyedVectors.load_word2vec_format('../data/{}/{}/embvec/embvec_{}.txt'.format(self.graphName, method, self.name), binary=False)
         return model
 

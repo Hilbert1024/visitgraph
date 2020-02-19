@@ -25,10 +25,11 @@ class TransMat(object):
     * ``node2vec``
     * ``sim2nd``
     """
-    def __init__(self, graph):
+    def __init__(self, graph, graphName):
         super(TransMat, self).__init__()
         self.graph = graph
         self.nodes = graph.nodes()
+        self.graphName = graphName
 
     def _getEdgeProb(self, preNode, curNode, p, q):
         """
@@ -44,24 +45,26 @@ class TransMat(object):
                 unnormProb.append(self.graph[curNode][curNbr]['weight'] / q)
         return np.array(unnormProb) / np.sum(unnormProb)
 
-    def deepWalkTransMat(self):
+    def unnormTransMat(self, method):
         """
+        An unormalized transition matrix of visit graph contains weight of each pair of edges.
+
         Reference
         ---------
         Perozzi B, Al-Rfou R, Skiena S. Deepwalk: Online learning of social representations[C]
         Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining. 2014: 701-710.
         """
-        if not os.path.exists('../data/deepwalk/transmat/transmat.pkl'):
+        if not os.path.exists('../data/{}/{}/transmat/transmat.pkl'.format(self.graphName, method)):
             print("Generating transition matrix...")
             nodeTrans = dict()
             for node in self.nodes:
                 unnormProb = np.array([self.graph[node][nbr]['weight'] for nbr in self.graph.neighbors(node)])
                 nodeTrans[node] = unnormProb / np.sum(unnormProb)
-            with open('../data/deepwalk/transmat/transmat.pkl', 'wb') as outp:
+            with open('../data/{}/{}/transmat/transmat.pkl'.format(self.graphName, method), 'wb') as outp:
                 pickle.dump(nodeTrans, outp)
         else:
             print("Transition matrix was already generated.")
-            with open('../data/deepwalk/transmat/transmat.pkl', 'rb') as inp:
+            with open('../data/{}/{}/transmat/transmat.pkl'.format(self.graphName, method), 'rb') as inp:
                 nodeTrans = pickle.load(inp)
         return nodeTrans
 
@@ -83,7 +86,7 @@ class TransMat(object):
         -----
         This process may cost much time.
         """
-        if not os.path.exists('../data/node2vec/transmat/transmat_{}_{}.pkl'.format(p,q)):
+        if not os.path.exists('../data/{}/node2vec/transmat/transmat_{}_{}.pkl'.format(self.graphName, p, q)):
             print("Generating transition matrix...")
             edgeTrans = dict()
             if directed:
@@ -93,28 +96,10 @@ class TransMat(object):
                 for edge in self.graph.edges():
                     edgeTrans[edge] = self._getEdgeProb(edge[0], edge[1], p, q)
                     edgeTrans[(edge[1], edge[0])] = self._getEdgeProb(edge[1], edge[0], p, q)
-            with open('../data/node2vec/transmat/transmat_{}_{}.pkl'.format(p,q), 'wb') as outp:
+            with open('../data/{}/node2vec/transmat/transmat_{}_{}.pkl'.format(self.graphName, p, q), 'wb') as outp:
                 pickle.dump(edgeTrans, outp)
         else:
             print("Transition matrix was already generated.")
-            with open('../data/node2vec/transmat/transmat_{}_{}.pkl'.format(p,q), 'rb') as inp:
+            with open('../data/{}/node2vec/transmat/transmat_{}_{}.pkl'.format(self.graphName, p, q), 'rb') as inp:
                 edgeTrans = pickle.load(inp)
         return edgeTrans
-
-    def visitgraphTransMat(self):
-        """
-        A unormalized transition matrix of visit graph contains weight of each pair of edges.
-        """
-        if not os.path.exists('../data/visitgraph/transmat/transmat.pkl'):
-            print("Generating transition matrix...")
-            nodeTrans = dict()
-            for node in self.nodes:
-                unnormProb = np.array([self.graph[node][nbr]['weight'] for nbr in self.graph.neighbors(node)])
-                nodeTrans[node] = unnormProb
-            with open('../data/visitgraph/transmat/transmat.pkl', 'wb') as outp:
-                pickle.dump(nodeTrans, outp)
-        else:
-            print("Transition matrix was already generated.")
-            with open('../data/visitgraph/transmat/transmat.pkl', 'rb') as inp:
-                nodeTrans = pickle.load(inp)
-        return nodeTrans

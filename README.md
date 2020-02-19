@@ -2,11 +2,15 @@
 ## Introduction
 visitgraph is a random walk strategy on graph. It marks the visited nodes when walking and tends to walk on the nodes that with less visits.
 
-In current node, deepwalk[1] always walks to its neighbors with equal probabilities, while node2vec[2] prefer to walk around current node(Breadth First Search) and far away from current node(Depth First Search). However, different from the above two methods, visitgraph keep a list which records the number of visits of each node. When walking to next node, visitgraph gets the number of visits of its neighbors in list, then walks to its neighbors with probabilities that are positively correlated with the reciprocal of the visiting times. Visitgraph performs better than deepwalk and node2vec on blogcatalog. The results are as follows.
+In current node, deepwalk[@perozzi2014deepwalk] always walks to its neighbors with equal probabilities, while node2vec[@grover2016node2vec] prefer to walk around current node(Breadth First Search) and far away from current node(Depth First Search). However, different from the above two methods, visitgraph keep a list which records the number of visits of each node. When walking to next node, visitgraph gets the number of visits of its neighbors in list, then walks to its neighbors with probabilities that are positively correlated with the reciprocal of the visiting times. Visitgraph performs better than deepwalk and node2vec on blogcatalog. The results are as follows.
 
 You can also consider this program as a graph embedding framework which contains simulating random walk series, embedding, training. You may add other methods of random walk in ./src/randomwalk.py.
 
-This is the version 1.0.0 released on 2020-2-18.
+Version 1.0.0 2020-2-18.
+Version 2.0.0 2020-2-19.
+1. Add a parameters density index in visitgraph. 
+2. Add 2 data sets, PPI(Homo Sapiens) and wikipedia.
+3. Delete results.
 
 ## Requirements
 
@@ -25,13 +29,7 @@ cd src
 python main.py
 ```
 
-## Data set
-
-|  graph   | nodes  | edges | labels |
-|  ----  | ----  | ----| ---- |
-| blogcatalog  | 10312 | 333983 | 39 |
-
-## Results
+## Parameter settings
 
 The parameter settings used for visitgraph are in line with typical values used for deepwalk and node2vec. Specifically, we set d = 128,
 r = 10, l = 80, w = 10 where
@@ -40,9 +38,15 @@ r = 10, l = 80, w = 10 where
 + l : walk length.
 + w : window size.
 
-![Multi-label classification results in BlogCatalog](https://github.com/Hilbert1024/visitgraph/blob/master/figure/example_result.jpg)
+## Data set
 
-## Notes
+|  Data set   | # nodes  | # edges | # labes | type | density |
+|  ----  | ----  | ----| ---- | ---- | ---- |
+| blogcatalog  | 10312 | 333983 | 39 | undirected, unweighted | $6.28\times 10^{-3}$ |
+| PPI(Homo Sapiens)  | 3890 | 76584 | 50 | undirected, unweighted | $1.01\times 10^{-2}$ |
+| wikipedia | 4777 | 184812 | 40 | undirected, weighted | $1.01\times 10^{-2}$ |
+
+## Nodes
 You may cost much time on generating node2vec transition matrix.
 
 ## References

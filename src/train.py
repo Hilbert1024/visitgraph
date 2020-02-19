@@ -29,11 +29,12 @@ class Trainer(object):
     """
     Apply OneVsRestClassifier of logistic regression to multi-labels classification.
     """
-    def __init__(self, model, labelsMat, name = ""):
+    def __init__(self, model, labelsMat, graphName, name = ""):
         super(Trainer, self).__init__()
         self.model = model
         self.labelsMat = labelsMat
         self.featureMat = np.asarray([model[str(node)] for node in np.arange(labelsMat.shape[0])])
+        self.graphName = graphName 
         if name == "":
             self.name = str(random.randint(0,10000))
         else:
@@ -61,6 +62,6 @@ class Trainer(object):
             resultMicroMat.append(resultMicro)
             resultMacroMat.append(resultMacro)
             
-        np.save('../data/{}/results/resultsMicro_{}.npy'.format(method, self.name), np.array(resultMicroMat))
-        np.save('../data/{}/results/resultsMacro_{}.npy'.format(method, self.name), np.array(resultMacroMat))
+        np.save('../data/{}/{}/results/resultsMicro_{}.npy'.format(self.graphName, method, self.name), np.array(resultMicroMat))
+        np.save('../data/{}/{}/results/resultsMacro_{}.npy'.format(self.graphName, method, self.name), np.array(resultMacroMat))
         return np.array(resultMicroMat), np.array(resultMacroMat)
