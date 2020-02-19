@@ -64,7 +64,7 @@ def PlotF1(graphName, code):
         l3, = ax2.plot(xlab, vgMacro, '^-')
         ax2.legend([l1,l2,l3],['deepwalk','node2vec','visitgraph'], loc = 0)
         ax2.set_xlabel("Train ratio")
-        ax2.set_ylabel("Maicro-F1")
+        ax2.set_ylabel("Macro-F1")
         fig.suptitle(graphName, fontsize=16)
     except:
         pass
@@ -77,10 +77,10 @@ def main():
     graphNameList = ['Homo_sapiens','wikipedia','blogcatalog']
     node2vecPara = {'Homo_sapiens' : (4, 1), 'wikipedia' : (4, 0.5), 'blogcatalog' : (0.25, 0.25)}
     visitgraphPara = {'Homo_sapiens' : 0.5, 'wikipedia' : 0.1, 'blogcatalog' : 1}
+    name = str(random.randint(0,10000)) # random name for mutiple runs of program.
     for graphName in graphNameList:
         graph, labelsMat = loadgraph.GraphLoader(graphName = graphName).getGraph()
         time.sleep(0.5)
-        name = str(random.randint(0,10000)) # random name for mutiple runs of program.
         window = 10
         print("Data set : {}".format(graphName))
         print("Experiments code : {}.".format(name))
