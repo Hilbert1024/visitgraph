@@ -52,7 +52,7 @@ class Trainer(object):
                 y_train = y[:trainSize]
                 X_test = X[trainSize:]
                 y_test = y[trainSize:] 
-                clf = TopKRanker(LogisticRegression())
+                clf = TopKRanker(LogisticRegression(solver = 'liblinear'))
                 clf.fit(X_train, y_train)
                 topKList = np.diff(y_test.tocsr().indptr)
                 preds = clf.predict(X_test, topKList)
