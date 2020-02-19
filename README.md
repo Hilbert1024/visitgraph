@@ -9,7 +9,7 @@ You can also consider this program as a graph embedding framework which contains
 Version 1.0.0 2020-2-18.
 
 Version 2.0.0 2020-2-19.
-1. Add a parameters density index in visitgraph. 
+1. Add a parameter density index in visitgraph. 
 2. Add 2 data sets, PPI(Homo Sapiens) and wikipedia.
 3. Delete results.
 
