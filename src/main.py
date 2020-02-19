@@ -41,11 +41,11 @@ def PlotF1(graphName, code):
 
         dwMicro = np.mean(np.split(dwMi[0],9),axis = 1)
         n2vMicro = np.mean(np.split(n2vMi[0],9),axis = 1)
-        sim2ndMicro = np.mean(np.split(vgMi[0],9),axis = 1)
+        vgMicro = np.mean(np.split(vgMi[0],9),axis = 1)
 
         dwMacro = np.mean(np.split(dwMa[0],9),axis = 1)
         n2vMacro = np.mean(np.split(n2vMa[0],9),axis = 1)
-        sim2ndMacro = np.mean(np.split(vgMa[0],9),axis = 1)
+        vgMacro = np.mean(np.split(vgMa[0],9),axis = 1)
 
         plt.style.use('ggplot') #设置ggplot绘图风格
         fig = plt.figure(figsize = (15, 5))
@@ -53,7 +53,7 @@ def PlotF1(graphName, code):
         ax1 = fig.add_subplot(121)
         l1, = ax1.plot(xlab, dwMicro, 's-')
         l2, = ax1.plot(xlab, n2vMicro, 'd-')
-        l3, = ax1.plot(xlab, sim2ndMicro, '^-')
+        l3, = ax1.plot(xlab, vgMicro, '^-')
         ax1.legend([l1,l2,l3],['deepwalk','node2vec','visitgraph'], loc = 0)
         ax1.set_xlabel("Train ratio")
         ax1.set_ylabel("Micro-F1")
@@ -61,7 +61,7 @@ def PlotF1(graphName, code):
         ax2 = fig.add_subplot(122)
         l1, = ax2.plot(xlab, dwMacro, 's-')
         l2, = ax2.plot(xlab, n2vMacro, 'd-')
-        l3, = ax2.plot(xlab, sim2ndMacro, '^-')
+        l3, = ax2.plot(xlab, vgMacro, '^-')
         ax2.legend([l1,l2,l3],['deepwalk','node2vec','visitgraph'], loc = 0)
         ax2.set_xlabel("Train ratio")
         ax2.set_ylabel("Maicro-F1")
