@@ -2,7 +2,7 @@
 ## Introduction
 visitgraph is a random walk strategy on graph. It marks the visited nodes when walking and tends to walk on the nodes that with less visits.
 
-In current node, deepwalk[1] always walks to its neighbors with equal probabilities, while node2vec[2] prefer to walk around current node(Breadth First Search) and far away from current node(Depth First Search). However, different from the above two methods, visitgraph keep a list which records the number of visits of each node. When walking to next node, visitgraph gets the number of visits of its neighbors in list, then walks to its neighbors with probabilities that are positively correlated with the reciprocal of the visiting times. Visitgraph performs better than deepwalk and node2vec on blogcatalog. The results are as follows.
+In current node, deepwalk[1] walks to its neighbors with equal probabilities, while node2vec[2] prefer to walk around current node(Breadth First Search) and far away from current node(Depth First Search). However, different from the above two methods, visitgraph keep a list which records the number of visits of each node. When walking to next node, visitgraph gets the number of visits of its neighbors in list, then walks to its neighbors with probabilities that are positively correlated with the reciprocal of the visiting times. Visitgraph performs better than deepwalk and node2vec on blogcatalog. The results are as follows.
 
 You can also consider this program as a graph embedding framework which contains simulating random walk series, embedding, training. You may add other methods of random walk in ./src/randomwalk.py.
 
