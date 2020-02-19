@@ -10,7 +10,7 @@ Version 1.0.0 2020-2-18.
 
 Version 2.0.0 2020-2-19.
 1. Add a parameter density index in visitgraph. 
-2. Add 2 data sets, PPI(Homo Sapiens) and wikipedia.
+2. Add 2 datasets, PPI(Homo Sapiens) and wikipedia.
 3. Delete results.
 
 ## Requirements
@@ -39,7 +39,7 @@ r = 10, l = 80, w = 10 where
 + l : walk length.
 + w : window size.
 
-## Data set
+## Dataset
 
 |  Data set   | # nodes  | # edges | # lables | type | density |
 |  ----  | ----  | ----| ---- | ---- | ---- |
